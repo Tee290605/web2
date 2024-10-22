@@ -10,6 +10,8 @@
                     background-image: url(nebula-galaxy.gif);
                     background-repeat: no-repeat;
                     background-size: 100%;
+                    width: auto;
+                    height: auto;
                     text-align: center;
                     background-position: center;
                     background-attachment: fixed;
@@ -19,8 +21,10 @@
                     background-color: rgb(5, 92, 255);
                     display: inline-block;
                     padding: 30px;
-                    width: 300px;
-                    height: 300px;
+                    min-width: 300px;
+                    min-height: 300px;
+                    width: auto;
+                    height: auto;
                     font-size: large;
                     text-align: center;
                     margin-top: 50px;/* khoảng cách so với màn hình*/
@@ -36,26 +40,39 @@
                 button{
                     text-align: center;
                     font-size: large;
+                    font-size:;
+                    align-items: center;
+                    justify-content: center;
                     padding: 7%;
-                    height: 30px;
-                    width: 50px;
+                    min-width: 70px;
+                    min-height: 50px;
+                    width: auto; 
+                    height: auto;
                     width: 50px;
                     margin: 2px;
                     border-radius: 20%;
                 }
-
+                #ketQuaTrenMh1, #ketQuaTrenMh{
+                    
+                
+                    border: none;
+                    text-align: right;
+                    padding-right: 10px;
+                 }
             </style>
     </head>
     <body>
 
         <div class='mayTinh'>
+           <div>
             <!--Phần màn hình của máy tính-->
-            <input type="text" id="ketQuaTrenMh" disabled>
             <br>
-            <button onclick="tinhToan()">=</button>
-            <button onclick="themVaoInput('0')">0</button>
-            <button onclick="clearMh()">AC  </button>
-            <button onclick="hoanDoiVitri('/')">/</button>
+            <input type="text" style="color: skyblue;"  id="ketQuaTrenMh1" disabled>
+            <br>
+            <input type="text" style="color: azure;" id="ketQuaTrenMh" disabled>
+            
+        </div>
+            
             <br>
             <button onclick="themVaoInput('1')">1</button>
             <button onclick="themVaoInput('2')">2</button>
@@ -71,6 +88,16 @@
             <button onclick="themVaoInput('8')">8</button>
             <button onclick="themVaoInput('9')">9</button>
             <button onclick="hoanDoiVitri('X')">X</button>
+            <br>
+            <button onclick="tinhToan()">=</button>
+            <button onclick="themVaoInput('0')">0</button>
+            <button onclick="clearMh()">AC  </button>
+            <button onclick="hoanDoiVitri('/')">/</button>
+            <br>
+            <button onclick="themVaoInput('.')">.</button>
+            <button onclick="phanTram('%')">%</button>
+            <button onclick="xoaNumber()">DEL</button>
+            <button onclick="ans()">ANS</button>
         </div>
 
         <!--Thêm các số vào tiếp theo chữ số đầu tiên,
@@ -79,47 +106,88 @@
             var soHienTai = '';// số hiện tại đang nhấn vào
             var phepTinh = '';
             var soGanVao = '';
+            
+            if(document.getElementById('ketQuaTrenMh').value === ''){
+                soHienTai = '';
+            }
      
     function themVaoInput(number){
         soHienTai = soHienTai + number; // nhâp số trước
-            document.getElementById('ketQuaTrenMh').value = soHienTai;// số trước được gán vào ketQuaTrenMh
+    
+        document.getElementById('ketQuaTrenMh').value = soHienTai;// số trước được gán vào ketQuaTrenMh
 
         }
-        
+    function ans(){
+    var    ans = soHienTai;
+        document.getElementById('ketQuaTrenMh').value = 'ANS';
+        document.getElementById('ketQuaTrenMh1').value = '';
+    }
+
         //Bấm phép tính sau đó số sau sễ được gán cho số trước
         //và 
         function hoanDoiVitri(nhapPhepTinh){
             phepTinh = nhapPhepTinh; // phép tính trên được đưa vào nó được gán cho biến phép tính
             soGanVao = soHienTai; soHienTai = '';
-            document.getElementById('ketQuaTrenMh').value = ''; // bấm phép tính thì màn hình sẽ bạn mất số
+            document.getElementById('ketQuaTrenMh1').value = document.getElementById('ketQuaTrenMh').value; // bấm phép tính thì màn hình sẽ bạn mất số
+            document.getElementById('ketQuaTrenMh').value = '';
         }
-
+        function phanTram(b){
+            var phanTram = b;
+            document.getElementById('ketQuaTrenMh').value = soHienTai + '%'; 
+        }
         function tinhToan(){
             var ketQuaDaTinh;
             //parseFloat() dung de chuyen chuoi thanh so
             if(phepTinh === '+' ){
                 ketQuaDaTinh = parseFloat(soGanVao) + parseFloat(soHienTai);
+                document.getElementById('ketQuaTrenMh1').value =  document.getElementById('ketQuaTrenMh1').value + ' + ' + document.getElementById('ketQuaTrenMh').value + ' = ' + ketQuaDaTinh;
+              
             }else if(phepTinh === '-' ){
                 ketQuaDaTinh = parseFloat(soGanVao) - parseFloat(soHienTai);
+                document.getElementById('ketQuaTrenMh1').value =  document.getElementById('ketQuaTrenMh1').value + ' - ' + document.getElementById('ketQuaTrenMh').value + ' = ' + ketQuaDaTinh;
+               
             }else if(phepTinh === '/' ){
                 ketQuaDaTinh = parseFloat(soGanVao) / parseFloat(soHienTai);
+                document.getElementById('ketQuaTrenMh1').value =  document.getElementById('ketQuaTrenMh1').value + ' / ' + document.getElementById('ketQuaTrenMh').value + ' = ' + ketQuaDaTinh;
+             
             }else if(phepTinh === 'X' ){
-                ketQuaDaTinh = parseFloat(soGanVao) *parseFloat(soHienTai);
+                ketQuaDaTinh = parseFloat(soGanVao) * parseFloat(soHienTai);
+                document.getElementById('ketQuaTrenMh1').value =  document.getElementById('ketQuaTrenMh1').value + ' x ' + document.getElementById('ketQuaTrenMh').value + ' = ' + ketQuaDaTinh;
+           
+            }else if(phanTram === '%'){
+                
+                ketQuaDaTinh = (parseFloat(soHienTai)/100).toString;
+                document.getElementById('ketQuaTrenMh1').value = ketQuaDaTinh;
+
+            } else{
+                soHienTai = '';
             }
 
-            document.getElementById("ketQuaTrenMh").value = ketQuaDaTinh ;
+            document.getElementById('ketQuaTrenMh').value = '';
             soHienTai = ketQuaDaTinh.toString(); // chuyen so thanh chuoi de su dung cho phep tinh tiep theo
             phepTinh = '';
             soGanVao = '';
 
 
         }
-
+        function xoaNumber(){
+         
+        var chuoiSo = document.getElementById('ketQuaTrenMh').value;
+        var xoaSO = chuoiSo.slice(0, -1);
+        document.getElementById('ketQuaTrenMh').value = xoaSO;
+        if(xoaSO===  ''){soHienTai = '';}// reset số khi nó về rỗng
+        }
+        
         function clearMh(){
+
             soGanVao = '';
             soHienTai = '';
             phepTinh = '';
             document.getElementById("ketQuaTrenMh").value = '';
+            document.getElementById("ketQuaTrenMh1").value = '';
+
+           var ans = document.getElementById('ketQuaTrenMh1').value ;
+
         }
 
 
